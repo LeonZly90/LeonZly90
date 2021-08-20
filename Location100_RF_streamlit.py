@@ -22,6 +22,10 @@ st.write("DB password:", st.secrets["db_password"])
 st.write(
 		"Has environment variables been set:",
 		os.environ["db_username"] == st.secrets["db_username"])
+[db_credentials]
+username = "my_username"
+password = "my_password"
+my_db.connect(username=st.secrets.db_credentials.username, password=st.secrets.db_credentials.password)
 
 
 
