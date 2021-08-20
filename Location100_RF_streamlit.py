@@ -17,6 +17,15 @@ from sklearn.tree import DecisionTreeRegressor
 from scipy import stats
 from sklearn.neighbors import KNeighborsRegressor
 
+st.write("DB username:", st.secrets["db_username"])
+st.write("DB password:", st.secrets["db_password"])
+st.write(
+		"Has environment variables been set:",
+		os.environ["db_username"] == st.secrets["db_username"])
+
+
+
+
 st.title('Pepper ML for Chicago area(location 100) by using random forest')
 
 # df = pd.read_csv("C:\PepperPepper\pepperProject.csv", encoding = 'unicode_escape', engine ='python')
