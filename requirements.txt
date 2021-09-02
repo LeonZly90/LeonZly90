@@ -9,3 +9,4 @@ joblib~=1.0.1
 Flask~=2.0.1
 dash~=1.21.0
 plotly~=5.2.1
+streamlit~=0.86.0
