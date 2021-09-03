@@ -11,8 +11,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor, AdaBoostRegressor, BaggingRegressor
 import time
 import streamlit as st  # streamlit run AmlStreamlit.py
+import altair as alt
 
 st.title('Pepper Machine Learning to predict project hours')
+
 url = 'https://raw.githubusercontent.com/LeonZly90/myData/main/pepperProject.csv?token=AG6BQ7M2G3HRK4IT4IU5ZALBD7M3S'
 
 ohe = preprocessing.OneHotEncoder(categories='auto')
@@ -40,27 +42,36 @@ def areaData(loc):
     revAmt_Hour0 = JobHour_by_StageMarket.iloc[:, -2:].abs()
     # st.write(revAmt_Hour0)
 
-    fig0 = plt.figure(0)
-    plt.subplot(1, 2, 1)
-    plt.scatter(revAmt_Hour0['POTENTIAL_REV_AMT'], revAmt_Hour0['TOTAL_HOURS'])
-    plt.xlabel('POTENTIAL_REV_AMT')
-    plt.ylabel('TOTAL_HOURS')
-    plt.title("Original data")
+    # fig0 = plt.figure(0)
+    # plt.subplot(1, 2, 1)
+    # plt.scatter(revAmt_Hour0['POTENTIAL_REV_AMT'], revAmt_Hour0['TOTAL_HOURS'])
+    # plt.xlabel('POTENTIAL_REV_AMT')
+    # plt.ylabel('TOTAL_HOURS')
+    # plt.title("Original data")
+    fig0 = alt.Chart(revAmt_Hour0).mark_circle().encode(x='POTENTIAL_REV_AMT',y='TOTAL_HOURS',
+                                                        tooltip=['POTENTIAL_REV_AMT', 'TOTAL_HOURS'])\
+        .properties(title='Origin Data', width=600).interactive()
+    st.altair_chart(fig0, use_container_width=True)
+
 
     z_scores = stats.zscore(revAmt_Hour0)
     abs_z_scores = np.abs(z_scores)
     revAmt_Hour1 = revAmt_Hour0[(abs_z_scores < 3).all(axis=1)]
     # st.write(revAmt_Hour1)
 
-    plt.subplot(1, 2, 2)
-    plt.scatter(revAmt_Hour1['POTENTIAL_REV_AMT'], revAmt_Hour1['TOTAL_HOURS'])
-    plt.xlabel('POTENTIAL_REV_AMT1')
-    plt.ylabel('TOTAL_HOURS1')
-    plt.title("Outlier clean")
-    plt.gcf().set_size_inches(17, 11)
-    plt.suptitle("Location: %i" % loc)
+    # plt.subplot(1, 2, 2)
+    # plt.scatter(revAmt_Hour1['POTENTIAL_REV_AMT'], revAmt_Hour1['TOTAL_HOURS'])
+    # plt.xlabel('POTENTIAL_REV_AMT1')
+    # plt.ylabel('TOTAL_HOURS1')
+    # plt.title("Outlier clean")
+    # plt.gcf().set_size_inches(17, 11)
+    # plt.suptitle("Location: %i" % loc)
     # plt.show()
-    st.write(fig0)
+    # st.write(fig0)
+    fig00 = alt.Chart(revAmt_Hour1).mark_circle().encode(x='POTENTIAL_REV_AMT',y='TOTAL_HOURS',
+                                                         tooltip=['POTENTIAL_REV_AMT', 'TOTAL_HOURS'])\
+        .properties(title='After clean outlier Data', width=600).interactive()
+    st.altair_chart(fig00, use_container_width=True)
 
     rest = JobHour_by_StageMarket.iloc[:, :-2]
     JobHour_by_StageMarket = rest.join(revAmt_Hour1, how='outer')
@@ -120,7 +131,7 @@ def ChooseModel(X_train, X_test, y_train, y_test):
     # st.write('best_model:', best_model, 'max_R2_value:', max_R2_value)
     return best_model, max_R2_value
 
-
+# @st.cache  # 👈 accelerate
 def gbTrain(X_train, X_test, y_train, y_test):
     start_time = time.time()
     search_grid = {'n_estimators': [50, 100, 200], 'learning_rate': [.001, 0.01, .1], 'max_depth': [2, 3, 4],
@@ -155,7 +166,6 @@ def gbTrain(X_train, X_test, y_train, y_test):
     # plt.show()
     st.write(fig1)
     return reg
-
 
 def rfTrain(X_train, X_test, y_train, y_test):
     # start_time = time.time()
@@ -225,15 +235,19 @@ def rfTrain(X_train, X_test, y_train, y_test):
     # st.write("MSE: {0}".format(mse))
 
     fig2 = plt.figure(2)
+    fig2.set_size_inches(18.5, 10.5)
+    fig2.set_dpi(100)
     x_ax = range(len(y_test))
-    plt.scatter(x_ax, y_test, s=5, color="blue", label="original")
-    plt.plot(x_ax, y_pred, lw=0.8, color="red", label="predicted")
+    plt.rcParams.update({'font.size': 22})
+    plt.scatter(x_ax, y_test, s=10, color="blue", label="original")
+    plt.plot(x_ax, y_pred, lw=1, color="green", label="predicted")
     plt.legend()
     plt.title('RandomForestRegressor')
+    plt.grid()
     # plt.show()
     st.write(fig2)
-    return reg
 
+    return reg
 
 def adaTrain(X_train, X_test, y_train, y_test):
     reg = AdaBoostRegressor()
