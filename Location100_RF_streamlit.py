@@ -19,9 +19,9 @@ from sklearn.neighbors import KNeighborsRegressor
 
 
 st.title('Pepper ML for Chicago area(location 100) by using random forest')
-
+token = 'AG6BQ7M2G3HRK4IT4IU5ZALBD7M3S'
 # df = pd.read_csv("C:\PepperPepper\pepperProject.csv", encoding = 'unicode_escape', engine ='python')
-url = 'https://raw.githubusercontent.com/LeonZly90/myData/main/pepperProject.csv?token=AG6BQ7M2G3HRK4IT4IU5ZALBD7M3S'
+url = f'https://raw.githubusercontent.com/LeonZly90/myData/main/pepperProject.csv?token={token}'
 df = pd.read_csv(url, encoding='unicode_escape', engine='python')
 df_data = df.copy()
 
