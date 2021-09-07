@@ -16,7 +16,7 @@ from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 from scipy import stats
 from sklearn.neighbors import KNeighborsRegressor
-import config
+# import config
 
 st.title('Pepper ML for Chicago area(location 100) by using random forest')
 # df = pd.read_csv("C:\PepperPepper\pepperProject.csv", encoding = 'unicode_escape', engine ='python')
