@@ -14,8 +14,9 @@ import streamlit as st  # streamlit run AmlStreamlit.py
 import altair as alt
 
 st.title('Pepper Machine Learning to predict project hours')
-
-url = 'https://raw.githubusercontent.com/LeonZly90/myData/main/pepperProject.csv?token=AG6BQ7M2G3HRK4IT4IU5ZALBD7M3S'
+import config
+# url = 'https://raw.githubusercontent.com/LeonZly90/myData/main/pepperProject.csv?token=AG6BQ7M2G3HRK4IT4IU5ZALBD7M3S'
+url = f'https://raw.githubusercontent.com/LeonZly90/myData/main/pepperProject.csv?token={config.token}'
 
 ohe = preprocessing.OneHotEncoder(categories='auto')
 standardscaler = preprocessing.StandardScaler()
