@@ -81,7 +81,8 @@ def areaData(loc):
     # st.write('numer_feature\n', numer_feature)
 
     feature_arr = ohe.fit_transform(JobHour_by_StageMarket[['STAGE_CODE', 'MARKET_TYPE']]).toarray()
-    feature_labels = ohe.get_feature_names()
+#     feature_labels = ohe.get_feature_names()
+    feature_labels = ohe.get_feature_names_out()
 
     feature_labels = np.array(feature_labels, dtype=object).ravel()
     # st.write('feature_labels\n', feature_labels)
